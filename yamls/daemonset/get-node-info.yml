@@ -27,6 +27,7 @@ spec:
       - name: app
         image: asdfry/get-node-info:20230625
         imagePullPolicy: Always
+        command: ["python", "app/main.py", "--duration", "3600"]
         securityContext:
           privileged: true
         env:
