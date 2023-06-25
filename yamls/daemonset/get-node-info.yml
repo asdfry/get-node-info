@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: get-node-info
+  namespace: default
+  labels:
+    app: get-node-info
+spec:
+  selector:
+    matchLabels:
+      app: get-node-info
+  template:
+    metadata:
+      labels:
+        app: get-node-info
+    spec:
+      serviceAccountName: jsh-2
+      automountServiceAccountToken: true
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: app
+        image: asdfry/get-node-info:20230625
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
