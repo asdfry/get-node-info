@@ -34,7 +34,7 @@ while True:
     hardware_info = {
         "updated_datetime": datetime.now().isoformat(),
         "cpu": cpu_info(),
-        "memory": memory_info(),
+        "mem": memory_info(),
         "disk": disk_info(),
         "network": network_info(),
     }
