@@ -25,7 +25,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: app
-        image: asdfry/get-node-info:20230625
+        image: asdfry/get-node-info:20230725
         imagePullPolicy: Always
         command: ["python", "app/main.py", "--duration", "3600"]
         securityContext:
