@@ -37,6 +37,7 @@ while True:
         "mem": memory_info(),
         "disk": disk_info(),
         "network": network_info(),
+        "hca": hca_info(),
     }
     logger.info(f"Get hardware information: node_name={node_name}, hardware_info={hardware_info}")
 
@@ -49,7 +50,7 @@ while True:
 
     # Patch node annotations
     v1.patch_node(name=node_name, body=node)
-    logger.info(f"Path node annotations: node_name={node_name}, hardware_info={hardware_info}")
+    logger.info(f"Patch node annotations: node_name={node_name}, hardware_info={hardware_info}")
 
     logger.info(f"Time sleep for {args.duration} sec . . .")
     time.sleep(args.duration)

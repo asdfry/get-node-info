@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: get-node-info
-  namespace: default
+  namespace: common
   labels:
     app: get-node-info
 spec:
@@ -14,7 +14,7 @@ spec:
       labels:
         app: get-node-info
     spec:
-      serviceAccountName: jsh-2
+      serviceAccountName: jsh
       automountServiceAccountToken: true
       tolerations:
       - key: node-role.kubernetes.io/control-plane
@@ -25,7 +25,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: app
-        image: asdfry/get-node-info:20230725
+        image: asdfry/get-node-info:20230801
         imagePullPolicy: Always
         command: ["python", "app/main.py", "--duration", "3600"]
         securityContext:

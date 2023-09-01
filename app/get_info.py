@@ -15,11 +15,14 @@ def cpu_info() -> str:
     return cpu
 
 
-def memory_info() -> List:
+def memory_info(sudo: bool = False) -> List:
     """
     Get information of memory
     """
-    output = subprocess.check_output(["lshw", "-c", "memory"])
+    cmd = ["lshw", "-c", "memory"]
+    if sudo:
+        cmd.insert(0, "sudo")
+    output = subprocess.check_output(cmd)
     decoded_output = output.decode()
 
     lines = [i for i in decoded_output.split("*-") if i[:4] == "bank"]
@@ -39,11 +42,14 @@ def memory_info() -> List:
     return memories
 
 
-def disk_info() -> List:
+def disk_info(sudo: bool = False) -> List:
     """
     Get information of disk
     """
-    output = subprocess.check_output(["lshw", "-c", "disk"])
+    cmd = ["lshw", "-c", "disk"]
+    if sudo:
+        cmd.insert(0, "sudo")
+    output = subprocess.check_output(cmd)
     decoded_output = output.decode()
 
     lines = [i for i in decoded_output.split("*-") if i.strip()]
@@ -72,11 +78,14 @@ def disk_info() -> List:
     return disks
 
 
-def network_info() -> List:
+def network_info(sudo: bool = False) -> List:
     """
     Get information of network
     """
-    output = subprocess.check_output(["lshw", "-c", "network"])
+    cmd = ["lshw", "-c", "network"]
+    if sudo:
+        cmd.insert(0, "sudo")
+    output = subprocess.check_output(cmd)
     decoded_output = output.decode()
 
     lines = [i for i in decoded_output.split("*-") if i.strip()]
@@ -91,3 +100,22 @@ def network_info() -> List:
             networks.append(f"{product}")
 
     return networks
+
+
+def hca_info() -> List:
+    """
+    Get information of hca
+    """
+    output = subprocess.check_output(["ibstat"])
+    decoded_output = output.decode()
+
+    lines = [i for i in decoded_output.split("CA ") if i.strip()]
+    hcas = []
+
+    for idx, line in enumerate(lines[::2]):
+        hca = line.strip("'\n\t")
+        info = lines[idx * 2 + 1]
+        if "State: Active" in info and "Physical state: LinkUp" in info and "Link layer: InfiniBand" in info:
+            hcas.append(hca)
+
+    return hcas

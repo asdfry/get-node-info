@@ -2,12 +2,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: node-reader-rolebinding
-  namespace: default
+  namespace: common
 subjects:
 # You can specify more than one "subject"
 - kind: ServiceAccount
-  name: jsh-2 # "name" is case sensitive
-  namespace: default
+  name: jsh # "name" is case sensitive
+  namespace: common
 roleRef:
   # "roleRef" specifies the binding to a Role / ClusterRole
   kind: ClusterRole # this must be Role or ClusterRole
